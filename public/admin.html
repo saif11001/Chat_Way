@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin Panel - ChatWay</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h2>👨‍💼 Admin Dashboard</h2>
+            <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+        </div>
+
+        <div class="admin-content">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h3>💬 Active Chats</h3>
+                    <button id="refreshBtn" class="refresh-btn">🔄</button>
+                </div>
+                <div id="userList" class="user-list">
+                    <p class="loading">Loading chats...</p>
+                </div>
+            </div>
+
+            <div class="chat-area">
+                <div class="chat-header" id="chatHeader">
+                    <span class="placeholder">Select a chat to start messaging</span>
+                </div>
+                <div class="messages-container" id="messagesContainer">
+                    <div class="no-chat-selected">
+                        <div class="icon">💬</div>
+                        <p>Select a user from the list to view messages</p>
+                    </div>
+                </div>
+                <div class="chat-input-container" id="chatInputContainer" style="display: none;">
+                    <form id="messageForm">
+                        <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off">
+                        <button type="submit">➤</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.ADMIN_DATA = {
+            id: '<%= userId %>',
+            token: '<%= token %>'
+        };
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

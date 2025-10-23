@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auth | talkWay</title>
+  <link rel="stylesheet" href="/css/auth.css" />
+</head>
+<body>
+  <div class="container">
+    <div id="messageBox" class="message"></div>
+
+    <form id="registerForm">
+      <h2>Register</h2>
+      <input type="name" id="registerName" placeholder="Full Name" required />
+      <input type="email" id="registerEmail" placeholder="Email" required />
+      <input type="password" id="registerPassword" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+      <p class="toggle">Already have an account? <span id="goLogin">Login</span></p>
+    </form>
+
+    <form id="loginForm" class="hidden">
+      <h2>Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button type="submit">Sign In</button>
+      <p class="toggle">Don't have an account? <span id="goRegister">Register</span></p>
+    </form>
+  </div>
+  
+  <script src="/js/auth.js"></script>
+</body>
+</html>

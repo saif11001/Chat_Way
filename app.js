@@ -1,53 +1,52 @@
-const express = require('express');
-const { join } = require('node:path');
-const { Server } = require('socket.io');
 const http = require('http');
+const express = require('express');
+const path = require('path');
+const { Server } = require('socket.io');
+const cookieParser = require('cookie-parser');
+const sequelize = require('./config/DB');
+require('dotenv').config()
 
+const PORT = process.env.PORT;
 const app = express();
 const server = http.createServer(app);
 
-const io = new Server(server);
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static(join(__dirname, 'public')));
+require('./socket/chat')(server);
 
-app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, 'index.html'));
+const authRoute = require('./routes/auth');
+const homeRoute = require('./routes/home');
+const adminRoute = require('./routes/admin');
+app.use('/auth', authRoute);
+app.use('/admin', adminRoute);
+app.use('/', homeRoute);
+
+app.use((error, req, res, next) => {
+    console.error(error, "Unhandled error occurred");
+    const statusCode = error.statusCode || 500;
+    const status = statusCode.toString().startsWith("4") ? "fail" : "error";
+    res.status(statusCode).json({
+        status: status,
+        message: error.message || "Internal Server Error"
+    });
 });
 
-io.on('connection', (socket) => {
-  console.log('a user connected ', socket.id);
+(async () => {
+    try{
+        await sequelize.authenticate();
+        console.log("Database connected successfully!");
 
-  socket.on('set_username', (username) => {
-    socket.username = username || 'Anonymous';
-    console.log(`${socket.username} joined the chat`);
-    socket.broadcast.emit('user_joined', `${socket.username} joined the chat`);
-  });
+        await sequelize.sync();
+            server.listen(PORT, () => {
+                console.log(`Server running at http://localhost:${PORT}`
+            );  
+        });
+    } catch (error) {
+        console.log('Database connection failed: ', error);
+        process.exit(1);
+    }
+})();
 
-  socket.on('message', (msg) => {
-    const messageData = {
-      user: socket.username || "Anonymous",
-      text: msg.text,
-      senderId: socket.id,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-    console.log(`${messageData.user}: ${messageData.text} (${messageData.time})`);
-    io.emit('send_messages_to_all_users', messageData);
-  });
 
-  socket.on('typing', () => {
-    socket.broadcast.emit('show_typing_status', socket.username);
-  });
-
-  socket.on('stop_typing', () => {
-    socket.broadcast.emit('clear_typing_status');
-  });
-
-  socket.on('disconnect', () => {
-    console.log(`${socket.username || "Anonymous"} disconnected: ${socket.id}`);
-    io.emit('user_left', `${socket.username || "Anonymous"} left the chat`);
-  });
-});
-
-server.listen(3000, () => {
-  console.log('server running at http://localhost:3000');
-});

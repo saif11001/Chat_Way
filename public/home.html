@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>ChatWay</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+<body>
+
+  <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+
+  <div class="chat-circle" id="chatCircle">💬</div>
+
+  <div class="support-box" id="supportBox">
+    <div class="support-header">
+      Support Louts
+      <button class="close-btn" id="closeBtn">×</button>
+    </div>
+    <div class="support-messages" id="messages"></div>
+
+    <div class="support-footer">
+      <form id="form">
+        <p id="typing_status"></p>
+        <input id="input" autocomplete="off" placeholder="Type a message..." />
+        <button type="submit">➤</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    window.USER_DATA = {
+      id: '<%= userId %>',
+      token: '<%= token %>'
+    };
+  </script>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script>
+
+</body>
+</html>

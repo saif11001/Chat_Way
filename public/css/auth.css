@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #1e1e1e, #111);
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background: #222;
+  width: 410px;
+  padding: 120px 60px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: gold;
+  font-weight: 600;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: #333;
+  color: #fff;
+  font-size: 15px;
+}
+
+input:focus {
+  background: #3d3d3d;
+  border: 1px solid gold;
+}
+
+button {
+  background: gold;
+  color: #111;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #ffda2a;
+}
+
+.toggle {
+  margin-top: 15px;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.toggle span {
+  color: gold;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.hidden {
+  display: none;
+}
+
+.message {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid gold;
+  color: gold;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 15px;
+  display: none;
+}
+
+.message.error {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.message.success {
+  color: #4caf50;
+  border-color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
+}

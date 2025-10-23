@@ -1,7 +1,7 @@
 {
-  "name": "talkway",
+  "name": "talkway-2",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,8 +11,17 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "nodemon": "^3.1.10",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.15.2",
+    "sequelize": "^6.37.7",
     "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
