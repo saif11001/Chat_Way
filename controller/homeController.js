@@ -1,13 +1,12 @@
 const path = require('path');
 const fs = require('fs');
-const User = require('../models/user'); // ← المهم ده!
+const User = require('../models/user');
 
 const getHomePage = async (req, res) => {
     try {
         const userId = req.user.id;
         const token = req.cookies.accessToken;
 
-        // Redirect admin to admin panel
         if (req.user.userRole === 'admin') {
             return res.redirect('/admin');
         }
@@ -19,11 +18,9 @@ const getHomePage = async (req, res) => {
             return res.redirect('/auth/login');
         }
 
-        // Read HTML file
         const htmlPath = path.join(__dirname, '..', 'public', 'home.html');
         let htmlContent = fs.readFileSync(htmlPath, 'utf8');
 
-        // Replace template variables
         htmlContent = htmlContent.replace('<%=userId%>', userId);
         htmlContent = htmlContent.replace('<%=token%>', token);
         htmlContent = htmlContent.replace('<%= userId %>', userId);

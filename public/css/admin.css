@@ -78,6 +78,7 @@ body {
 }
 
 .refresh-btn {
+  color: #fff;
   background: transparent;
   border: none;
   font-size: 20px;

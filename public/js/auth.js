@@ -12,13 +12,11 @@ function showMessage(text, type = "error") {
   setTimeout(() => (messageBox.style.display = "none"), 4000);
 }
 
-// Show login form by default
 if (loginForm && registerForm) {
   loginForm.classList.remove("hidden");
   registerForm.classList.add("hidden");
 }
 
-// Check for error messages in URL
 const params = new URLSearchParams(window.location.search);
 const errorType = params.get("error");
 if (errorType) {
@@ -38,7 +36,6 @@ if (errorType) {
   }
 }
 
-// Toggle between login and register forms
 goLogin?.addEventListener("click", () => {
   registerForm.classList.add("hidden");
   loginForm.classList.remove("hidden");
@@ -49,7 +46,6 @@ goRegister?.addEventListener("click", () => {
   registerForm.classList.remove("hidden");
 });
 
-// Register form submission
 registerForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const name = document.getElementById("registerName").value.trim();
@@ -69,7 +65,7 @@ registerForm?.addEventListener("submit", async (e) => {
     });
 
     if (res.redirected) {
-      console.log("✅ Registration successful, redirecting...");
+      console.log("Registration successful, redirecting...");
       return (window.location.href = res.url);
     }
 
@@ -82,15 +78,14 @@ registerForm?.addEventListener("submit", async (e) => {
       return (window.location.href = `/auth/register?error=${redirectError}`);
     }
 
-    console.log("✅ Registration successful!");
+    console.log("Registration successful!");
     window.location.href = "/";
   } catch (err) {
-    console.error("❌ Registration error:", err);
+    console.error("Registration error:", err);
     showMessage("Error during registration", "error");
   }
 });
 
-// Login form submission
 loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const email = document.getElementById("loginEmail").value.trim();
@@ -100,7 +95,7 @@ loginForm?.addEventListener("submit", async (e) => {
     return showMessage("Please enter your email and password.", "error");
   }
 
-  console.log("🔐 Attempting login for:", email);
+  console.log("Attempting login for:", email);
 
   try {
     const res = await fetch("/auth/login", {
@@ -110,11 +105,11 @@ loginForm?.addEventListener("submit", async (e) => {
       body: JSON.stringify({ email, password }),
     });
 
-    console.log("📡 Response status:", res.status);
-    console.log("📍 Redirected:", res.redirected);
+    console.log("Response status:", res.status);
+    console.log("Redirected:", res.redirected);
 
     if (res.redirected) {
-      console.log("✅ Login successful, redirecting to:", res.url);
+      console.log("Login successful, redirecting to:", res.url);
       return (window.location.href = res.url);
     }
 
@@ -125,14 +120,14 @@ loginForm?.addEventListener("submit", async (e) => {
       if (data.message?.includes("not found")) errorType = "user_not_found";
       else if (data.message?.includes("Incorrect")) errorType = "wrong_password";
 
-      console.error("❌ Login failed:", errorType);
+      console.error("Login failed:", errorType);
       return (window.location.href = `/auth/login?error=${errorType}`);
     }
 
-    console.log("✅ Login successful!");
+    console.log("Login successful!");
     window.location.href = "/";
   } catch (err) {
-    console.error("❌ Login error:", err);
+    console.error("Login error:", err);
     showMessage("Error during login", "error");
   }
 });

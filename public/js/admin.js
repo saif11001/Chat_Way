@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
     currentUserId = userId;
     currentUserName = userName;
 
-    console.log(`👤 Selected user ${userId} (${userName})`);
+    console.log(`Selected user ${userId} (${userName})`);
 
     document.querySelectorAll('.user-item').forEach(item => {
       item.classList.remove('active');
@@ -100,21 +100,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     await loadUserMessages(userId);
 
-    // ✅ خلي الدائرة تختفي فوراً
     const badge = element.querySelector('.message-count');
     if (badge) {
       badge.remove();
     }
 
-    // ✅ اعمل mark as read في الخلفية
     try {
       await fetch(`/admin/api/messages/mark-read/${userId}`, {
         method: 'POST',
         credentials: 'include'
       });
-      console.log(`✅ Messages for user ${userId} marked as read`);
+      console.log(`Messages for user ${userId} marked as read`);
     } catch (err) {
-      console.error("❌ Error marking messages as read:", err);
+      console.error("Error marking messages as read:", err);
     }
   }
 
@@ -184,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const text = messageInput.value.trim();
     if (!text) return;
 
-    console.log(`📤 Sending message to user ${currentUserId}:`, text);
+    console.log(`Sending message to user ${currentUserId}:`, text);
 
     socket.emit('admin_message', {
       clientId: currentUserId,
@@ -195,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   socket.on('admin_message_sent', (data) => {
-    console.log("✅ Admin message confirmed:", data);
+    console.log("Admin message confirmed:", data);
     
     if (currentUserId && String(data.roomId) === String(currentUserId)) {
       renderMessage({
@@ -207,12 +205,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   socket.on('new_user_message', (data) => {
-    console.log("📨 New user message:", data);
+    console.log("New user message:", data);
     
-    // ✅ حدث قائمة المحادثات عشان تظهر الدائرة الصفراء
     loadActiveChats();
 
-    // ✅ لو المحادثة مفتوحة دلوقتي، اعرض الرسالة و mark as read
     if (currentUserId && String(data.roomId) === String(currentUserId)) {
       renderMessage({
         content: data.content,
@@ -229,17 +225,17 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   socket.on('message_error', (error) => {
-    console.error("❌ Message error:", error);
+    console.error("Message error:", error);
     alert(`Failed to send message: ${error.error}`);
   });
 
   refreshBtn.addEventListener('click', () => {
-    console.log("🔄 Refreshing chats...");
+    console.log("Refreshing chats...");
     loadActiveChats();
   });
 
   logoutBtn.addEventListener('click', async () => {
-    console.log("🚪 Logging out...");
+    console.log("Logging out...");
     try {
       await fetch('/auth/logout', {
         method: 'POST',
@@ -252,15 +248,15 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   socket.on('connect', () => {
-    console.log("✅ Admin connected to server");
+    console.log("Admin connected to server");
     loadActiveChats();
   });
 
   socket.on('disconnect', () => {
-    console.log("⚠️ Disconnected from server");
+    console.log("Disconnected from server");
   });
 
   socket.on('connect_error', (err) => {
-    console.error("🔴 Connection error:", err);
+    console.error("Connection error:", err);
   });
 });
