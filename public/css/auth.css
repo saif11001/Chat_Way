@@ -104,3 +104,58 @@ button:hover {
   border-color: #4caf50;
   background: rgba(76, 175, 80, 0.1);
 }
+
+
+/* ========================= */
+/* موبايل ريسبونسيف بدون تغيير التصميم */
+/* ========================= */
+@media (max-width: 768px) {
+  body {
+    padding: 20px;
+    height: auto;
+  }
+
+  .container {
+    width: 95%;
+    max-width: 400px;
+    padding: 100px 40px;
+    border-radius: 16px;
+  }
+
+  input,
+  button {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 100%;
+    padding: 80px 30px;
+    border-radius: 14px;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  input,
+  button {
+    font-size: 14px;
+    padding: 9px;
+  }
+
+  .toggle {
+    font-size: 13px;
+  }
+
+  .message {
+    font-size: 13px;
+  }
+}

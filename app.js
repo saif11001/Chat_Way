@@ -5,11 +5,8 @@ const { Server } = require('socket.io');
 const cookieParser = require('cookie-parser');
 const sequelize = require('./config/DB');
 require('dotenv').config()
-const helmet = require("helmet");
-const morgan = require("morgan");
 const compression = require("compression");
 const cors = require("cors");
-const csrf = require("csurf");
 
 const PORT = process.env.PORT;
 const app = express();
@@ -18,11 +15,8 @@ const server = http.createServer(app);
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(helmet());
-app.use(morgan("dev"));
 app.use(compression());
 app.use(cors());
-app.use(csrf());
 
 require('./socket/chat')(server);
 
@@ -58,5 +52,3 @@ app.use((error, req, res, next) => {
         process.exit(1);
     }
 })();
-
-

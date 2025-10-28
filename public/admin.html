@@ -13,7 +13,10 @@
         </div>
 
         <div class="admin-content">
-            <div class="sidebar">
+            <!-- Overlay للموبايل -->
+            <div class="sidebar-overlay" id="sidebarOverlay"></div>
+            
+            <div class="sidebar" id="sidebar">
                 <div class="sidebar-header">
                     <h3>💬 Active Chats</h3>
                     <button id="refreshBtn" class="refresh-btn">↻</button>
@@ -41,6 +44,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- زر فتح القائمة للموبايل -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">📋</button>
     </div>
 
     <script>
@@ -48,6 +54,14 @@
             id: '<%= userId %>',
             token: '<%= token %>'
         };
+        
+        // Debug للتأكد إن القيم موجودة
+        console.log('ADMIN_DATA initialized:', {
+            hasId: !!window.ADMIN_DATA.id && window.ADMIN_DATA.id !== '<%= userId %>',
+            hasToken: !!window.ADMIN_DATA.token && window.ADMIN_DATA.token !== '<%= token %>',
+            id: window.ADMIN_DATA.id,
+            tokenLength: window.ADMIN_DATA.token ? window.ADMIN_DATA.token.length : 0
+        });
     </script>
 
     <script src="/socket.io/socket.io.js"></script>

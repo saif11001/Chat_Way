@@ -32,6 +32,14 @@
       id: '<%= userId %>',
       token: '<%= token %>'
     };
+    
+    // Debug للتأكد إن القيم موجودة
+    console.log('USER_DATA initialized:', {
+      hasId: !!window.USER_DATA.id && window.USER_DATA.id !== '<%= userId %>',
+      hasToken: !!window.USER_DATA.token && window.USER_DATA.token !== '<%= token %>',
+      id: window.USER_DATA.id,
+      tokenLength: window.USER_DATA.token ? window.USER_DATA.token.length : 0
+    });
   </script>
 
   <script src="/socket.io/socket.io.js"></script>

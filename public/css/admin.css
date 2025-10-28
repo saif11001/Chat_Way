@@ -129,12 +129,16 @@ body {
 }
 
 .message-count {
-  background: #b8860b;
+  background: #f1c40f;
   color: #000;
-  padding: 2px 8px;
+  padding: 4px 8px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: bold;
+}
+
+.message-count.hidden {
+  display: none !important;
 }
 
 .user-email {
@@ -315,16 +319,248 @@ body {
   background: #000;
 }
 
-.message-count {
-  background-color: #f1c40f;
-  color: #000;
-  border-radius: 50%;
-  padding: 4px 8px;
-  font-size: 12px;
-  display: inline-block;
-  margin-left: 6px;
+/* ============================================ */
+/* MOBILE RESPONSIVE - أقل من 768px */
+/* ============================================ */
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 12px 15px;
+  }
+
+  .admin-header h2 {
+    font-size: 18px;
+  }
+
+  .logout-btn {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+
+  .admin-content {
+    position: relative;
+  }
+
+  /* إخفاء الـ Sidebar افتراضياً على الموبايل */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 85%;
+    max-width: 320px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    border-right: 3px solid #b8860b;
+  }
+
+  .sidebar.show-mobile {
+    left: 0;
+  }
+
+  /* Overlay عند فتح الـ Sidebar */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+  }
+
+  .sidebar-overlay.show {
+    display: block;
+  }
+
+  .sidebar-header {
+    padding: 15px;
+  }
+
+  .sidebar-header h3 {
+    font-size: 16px;
+  }
+
+  /* Chat Area */
+  .chat-area {
+    width: 100%;
+  }
+
+  .chat-header {
+    padding: 15px;
+  }
+
+  .chat-header .user-info .avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+
+  .chat-header .user-info .details h3 {
+    font-size: 16px;
+  }
+
+  .chat-header .user-info .details p {
+    font-size: 12px;
+  }
+
+  .messages-container {
+    padding: 15px 10px;
+  }
+
+  .message {
+    max-width: 85%;
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .no-chat-selected .icon {
+    font-size: 60px;
+  }
+
+  .no-chat-selected p {
+    font-size: 14px;
+    padding: 0 20px;
+  }
+
+  .chat-input-container {
+    padding: 12px 10px;
+  }
+
+  #messageInput {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  #messageForm button {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+
+  /* User List Items */
+  .user-item {
+    padding: 12px;
+  }
+
+  .user-name {
+    font-size: 15px;
+  }
+
+  .user-email {
+    font-size: 11px;
+  }
+
+  .last-message {
+    font-size: 12px;
+  }
 }
 
-.message-count.hidden {
-  display: none !important;
+/* ============================================ */
+/* EXTRA SMALL MOBILE - أقل من 480px */
+/* ============================================ */
+@media (max-width: 480px) {
+  .admin-header h2 {
+    font-size: 16px;
+  }
+
+  .logout-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .sidebar {
+    width: 90%;
+  }
+
+  .chat-header .user-info {
+    gap: 8px;
+  }
+
+  .chat-header .user-info .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .chat-header .user-info .details h3 {
+    font-size: 15px;
+  }
+
+  .message {
+    max-width: 90%;
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+
+  .message .timestamp {
+    font-size: 10px;
+  }
+
+  #messageInput {
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+
+  #messageForm button {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+  }
+
+  .no-chat-selected .icon {
+    font-size: 50px;
+  }
+
+  .no-chat-selected p {
+    font-size: 13px;
+  }
+}
+
+/* زر لفتح الـ Sidebar على الموبايل */
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #b8860b;
+  color: #000;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 998;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-btn:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-menu-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+    bottom: 15px;
+    left: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-list::-webkit-scrollbar,
+  .messages-container::-webkit-scrollbar {
+    width: 4px;
+  }
 }

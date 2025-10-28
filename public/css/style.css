@@ -318,15 +318,304 @@ body::before {
   }
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 480px) {
+/* ============================================ */
+/* MOBILE RESPONSIVE - أقل من 768px */
+/* ============================================ */
+@media (max-width: 768px) {
+  body::before {
+    font-size: 2rem;
+    top: 35%;
+  }
+
+  .logout-btn {
+    padding: 8px 15px;
+    font-size: 14px;
+    top: 15px;
+    right: 15px;
+  }
+
+  .chat-circle {
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
+    bottom: 20px;
+    right: 20px;
+  }
+
   .support-box {
     width: 90%;
-    right: 5%;
-  }
-  
-  .chat-circle {
-    right: 20px;
+    max-width: 380px;
+    height: 550px;
     bottom: 20px;
+    right: 5%;
+    border-radius: 12px;
+  }
+
+  .support-header {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  .close-btn {
+    font-size: 22px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .support-messages {
+    padding: 12px;
+  }
+
+  .message {
+    max-width: 80%;
+    padding: 9px 13px;
+  }
+
+  .message p {
+    font-size: 13px;
+  }
+
+  .timestamp {
+    font-size: 10px;
+  }
+
+  #form {
+    padding: 12px;
+  }
+
+  #input {
+    height: 42px;
+    padding: 0 16px;
+    font-size: 13px;
+  }
+
+  #form button {
+    width: 42px;
+    height: 42px;
+    font-size: 17px;
+  }
+
+  #typing_status {
+    font-size: 11px;
+    left: 12px;
+  }
+}
+
+/* ============================================ */
+/* MOBILE - أقل من 480px */
+/* ============================================ */
+@media (max-width: 480px) {
+  body::before {
+    font-size: 1.5rem;
+    top: 30%;
+    text-align: center;
+    width: 90%;
+  }
+
+  .logout-btn {
+    padding: 7px 13px;
+    font-size: 13px;
+    top: 12px;
+    right: 12px;
+  }
+
+  .chat-circle {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+    bottom: 18px;
+    right: 18px;
+  }
+
+  .support-box {
+    width: 95%;
+    height: 85vh;
+    max-height: 600px;
+    bottom: 0;
+    right: 2.5%;
+    border-radius: 15px 15px 0 0;
+  }
+
+  .support-header {
+    padding: 13px;
+    font-size: 14px;
+  }
+
+  .close-btn {
+    font-size: 20px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .support-messages {
+    padding: 10px;
+  }
+
+  .message {
+    max-width: 85%;
+    padding: 8px 12px;
+  }
+
+  .message p {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .timestamp {
+    font-size: 10px;
+    margin-top: 4px;
+  }
+
+  #form {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  #input {
+    height: 40px;
+    padding: 0 15px;
+    font-size: 13px;
+    border-radius: 20px;
+  }
+
+  #form button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  #typing_status {
+    font-size: 11px;
+    left: 10px;
+    padding: 4px 8px;
+  }
+}
+
+/* ============================================ */
+/* EXTRA SMALL MOBILE - أقل من 360px */
+/* ============================================ */
+@media (max-width: 360px) {
+  body::before {
+    font-size: 1.2rem;
+  }
+
+  .logout-btn {
+    padding: 6px 11px;
+    font-size: 12px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .chat-circle {
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .support-box {
+    width: 100%;
+    height: 90vh;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .support-header {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .message {
+    max-width: 88%;
+    padding: 7px 11px;
+    border-radius: 18px;
+  }
+
+  .message p {
+    font-size: 12px;
+  }
+
+  .timestamp {
+    font-size: 9px;
+  }
+
+  #input {
+    height: 38px;
+    padding: 0 14px;
+    font-size: 12px;
+  }
+
+  #form button {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+}
+
+/* ============================================ */
+/* تحسين عام للموبايل من غير تغيير التصميم */
+/* ============================================ */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
+
+  .support-box {
+    width: 92%;
+    right: 4%;
+    left: 4%;
+    bottom: 15px;
+  }
+
+  /* تعديل خفيف لحجم الخط داخل الرسائل */
+  .message p {
+    font-size: 14px;
+  }
+
+  /* الزرار يفضل ثابت فوق الكيبورد في الموبايل */
+  #form {
+    position: sticky;
+    bottom: 0;
+  }
+
+  /* الرسائل تكون أقرب لبعض */
+  .support-messages {
+    gap: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .support-box {
+    width: 96%;
+    left: 2%;
+    right: 2%;
+    bottom: 10px;
+  }
+
+  .chat-circle {
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .support-messages {
+    padding-bottom: 65px; /* مساحة للأزرار لما الكيبورد يطلع */
+  }
+}
+
+@media (max-width: 360px) {
+  .support-box {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  #input {
+    font-size: 11.5px;
+  }
+
+  #form button {
+    font-size: 15px;
   }
 }

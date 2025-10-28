@@ -5,24 +5,42 @@ const Message = require('../models/message');
 const User = require('../models/user');
 
 const getAdminPage = async (req, res) => {
-    const userId = req.user.id;
-    const token = req.cookies.accessToken;
+    try {
+        const userId = req.user.id;
+        const token = req.cookies.accessToken;
 
-    const admin = await User.findByPk(userId);
-    if (!admin) {
-        res.clearCookie("accessToken");
-        res.clearCookie("refreshToken");
-        return res.redirect('/auth/login');
+        console.log("👑 Admin page request - User ID:", userId);
+        console.log("🔑 Token exists:", !!token);
+
+        const admin = await User.findByPk(userId);
+        if (!admin) {
+            console.log("❌ Admin not found in database");
+            res.clearCookie("accessToken");
+            res.clearCookie("refreshToken");
+            return res.redirect('/auth/login');
+        }
+
+        console.log("✅ Admin found:", admin.name);
+
+        let htmlContent = fs.readFileSync(
+            path.join(__dirname, '..', 'public', 'admin.html'), 
+            'utf8'
+        );
+
+        // Replace template variables with proper escaping
+        htmlContent = htmlContent.replace(/<%=\s*userId\s*%>/g, userId);
+        htmlContent = htmlContent.replace(/<%=\s*token\s*%>/g, token);
+
+        console.log("✅ Sending admin page to user:", userId);
+
+        res.send(htmlContent);
+    } catch (error) {
+        console.error("❌ Admin page error:", error);
+        res.status(500).json({
+            status: 'error',
+            message: error.message
+        });
     }
-
-    let htmlContent = fs.readFileSync(path.join(__dirname, '..', 'public', 'admin.html'), 'utf8');
-
-    htmlContent = htmlContent.replace('<%=userId%>', userId);
-    htmlContent = htmlContent.replace('<%=token%>', token);
-    htmlContent = htmlContent.replace('<%= userId %>', userId);
-    htmlContent = htmlContent.replace('<%= token %>', token);
-
-    res.send(htmlContent);
 };
 
 const getActiveChats = async (req, res, next) => {
@@ -31,7 +49,8 @@ const getActiveChats = async (req, res, next) => {
             attributes: [
                 'roomId',
                 [Sequelize.fn('MAX', Sequelize.col('createdAt')), 'lastMessageTime'],
-                [Sequelize.fn('COUNT', Sequelize.col('id')), 'messageCount']
+                [Sequelize.fn('COUNT', Sequelize.col('id')), 'messageCount'],
+                [Sequelize.literal(`SUM(CASE WHEN "isRead" = false THEN 1 ELSE 0 END)`), 'unreadCount']
             ],
             group: ['roomId'],
             order: [[Sequelize.fn('MAX', Sequelize.col('createdAt')), 'DESC']],
@@ -49,14 +68,6 @@ const getActiveChats = async (req, res, next) => {
                     order: [['createdAt', 'DESC']]
                 });
 
-                const unreadCount = await Message.count({
-                    where: { 
-                        roomId: chat.roomId,
-                        senderType: 'user',
-                        isRead: false
-                    }
-                });
-
                 return {
                     userId: chat.roomId,
                     userName: user ? user.name : 'Unknown User',
@@ -64,7 +75,7 @@ const getActiveChats = async (req, res, next) => {
                     lastMessage: lastMessage ? lastMessage.content : '',
                     lastMessageTime: chat.lastMessageTime,
                     messageCount: chat.messageCount,
-                    unreadCount: unreadCount
+                    unreadCount: chat.unreadCount || 0
                 };
             })
         );
@@ -102,19 +113,19 @@ const getUserMessages = async (req, res, next) => {
 };
 
 const markMessagesAsRead = async (req, res, next) => {
-  try {
-    const { userId } = req.params;
+    try {
+        const { userId } = req.params;
 
-    await Message.update(
-      { isRead: true },
-      { where: { roomId: userId, senderType: 'user', isRead: false } }
-    );
+        await Message.update(
+            { isRead: true },
+            { where: { roomId: userId, senderType: 'user', isRead: false } }
+        );
 
-    res.json({ status: 'success', message: 'Messages marked as read' });
-  } catch (error) {
-    console.error("Error marking messages as read:", error);
-    next(error);
-  }
+        res.json({ status: 'success', message: 'Messages marked as read' });
+    } catch (error) {
+        console.error("Error marking messages as read:", error);
+        next(error);
+    }
 };
 
 module.exports = {

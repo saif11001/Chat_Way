@@ -7,28 +7,55 @@ const getHomePage = async (req, res) => {
         const userId = req.user.id;
         const token = req.cookies.accessToken;
 
+        console.log("========================================");
+        console.log("🏠 HOME PAGE REQUEST");
+        console.log("User ID:", userId);
+        console.log("Token exists:", !!token);
+        console.log("Token preview:", token ? token.substring(0, 20) + '...' : 'NONE');
+        console.log("========================================");
+
+        // Redirect admin to admin panel
         if (req.user.userRole === 'admin') {
+            console.log("👑 Admin detected, redirecting to /admin");
             return res.redirect('/admin');
         }
 
         const user = await User.findByPk(userId);
         if (!user) {
+            console.log("❌ User not found in database");
             res.clearCookie("accessToken");
             res.clearCookie("refreshToken");
             return res.redirect('/auth/login');
         }
 
+        console.log("✅ User found:", user.name);
+
+        // Read HTML file
         const htmlPath = path.join(__dirname, '..', 'public', 'home.html');
         let htmlContent = fs.readFileSync(htmlPath, 'utf8');
 
-        htmlContent = htmlContent.replace('<%=userId%>', userId);
-        htmlContent = htmlContent.replace('<%=token%>', token);
-        htmlContent = htmlContent.replace('<%= userId %>', userId);
-        htmlContent = htmlContent.replace('<%= token %>', token);
+        // Debug: تأكد إن الـ placeholders موجودة
+        const hasUserIdPlaceholder = htmlContent.includes('<%=');
+        console.log("HTML contains placeholders:", hasUserIdPlaceholder);
+
+        // Replace ALL variations of the template variables
+        htmlContent = htmlContent
+            .replace(/<%=\s*userId\s*%>/g, String(userId))
+            .replace(/<%=\s*token\s*%>/g, String(token));
+
+        // Debug: تأكد إن التبديل حصل
+        const stillHasPlaceholders = htmlContent.includes('<%=');
+        console.log("Placeholders remaining after replace:", stillHasPlaceholders);
+
+        if (stillHasPlaceholders) {
+            console.error("⚠️ WARNING: Some placeholders were not replaced!");
+        }
+
+        console.log("✅ Sending home page to user:", userId);
 
         res.send(htmlContent);
     } catch (error) {
-        console.error("Home page error:", error);
+        console.error("❌ Home page error:", error);
         res.status(500).json({
             status: 'error',
             message: error.message

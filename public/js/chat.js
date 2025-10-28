@@ -1,11 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("Checking authentication...");
+  console.log("🔍 Checking authentication...");
 
   const userData = window.USER_DATA;
 
-  if (!userData || !userData.token || !userData.id) {
-    console.error("No user data found!");
-    alert("You are not logged in!");
+  console.log("User Data:", userData); // للتشخيص
+
+  // التحقق من وجود البيانات
+  if (!userData) {
+    console.error("❌ No USER_DATA found in window object!");
+    alert("Authentication error: No user data found!");
+    window.location.href = "/auth/login";
+    return;
+  }
+
+  if (!userData.token) {
+    console.error("❌ No token found in USER_DATA!");
+    alert("Authentication error: No token found!");
+    window.location.href = "/auth/login";
+    return;
+  }
+
+  if (!userData.id) {
+    console.error("❌ No user ID found in USER_DATA!");
+    alert("Authentication error: No user ID found!");
     window.location.href = "/auth/login";
     return;
   }
@@ -13,7 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const token = userData.token;
   const decodedUserId = userData.id;
 
-  console.log("Logged in as user:", decodedUserId);
+  console.log("✅ Logged in as user:", decodedUserId);
+  console.log("🔑 Token length:", token.length);
 
   const socket = io({
     auth: { token }
@@ -29,13 +47,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const logoutBtn = document.getElementById("logoutBtn");
 
   chatCircle.addEventListener("click", () => {
-    console.log("Opening chat...");
+    console.log("💬 Opening chat...");
     chatCircle.classList.add("hide");
     supportBox.classList.add("show");
   });
 
   closeBtn.addEventListener("click", () => {
-    console.log("Closing chat...");
+    console.log("❌ Closing chat...");
     supportBox.classList.remove("show");
     chatCircle.classList.remove("hide");
   });
@@ -45,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const text = input.value.trim();
     if (!text) return;
 
-    console.log("Sending message:", text);
+    console.log("📤 Sending message:", text);
     socket.emit("chat message", text);
     input.value = "";
   });
@@ -78,12 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   socket.on("chat message", (data) => {
-    console.log("Received message:", data);
+    console.log("📨 Received message:", data);
     renderMessage(data);
   });
 
   socket.on("loadMessages", (previousMessages) => {
-    console.log("Loading", previousMessages.length, "previous messages");
+    console.log("📥 Loading", previousMessages.length, "previous messages");
     messages.innerHTML = "";
     previousMessages.forEach(renderMessage);
   });
@@ -110,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   logoutBtn.addEventListener("click", async () => {
-    console.log("Logging out...");
+    console.log("🚪 Logging out...");
     try {
       await fetch('/auth/logout', {
         method: 'POST',
@@ -123,14 +141,15 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   socket.on("connect", () => {
-    console.log("Connected to server");
+    console.log("✅ Connected to server - Socket ID:", socket.id);
   });
 
   socket.on("disconnect", () => {
-    console.log("Disconnected from server");
+    console.log("⚠️ Disconnected from server");
   });
 
   socket.on("connect_error", (err) => {
-    console.error("Connection error:", err);
+    console.error("❌ Connection error:", err.message);
+    alert("Connection error! Please refresh the page.");
   });
 });
