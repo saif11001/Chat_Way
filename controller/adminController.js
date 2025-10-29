@@ -51,6 +51,9 @@ const getActiveChats = async (req, res, next) => {
                 [Sequelize.fn('MAX', Sequelize.col('createdAt')), 'lastMessageTime'],
                 [Sequelize.fn('COUNT', Sequelize.col('id')), 'messageCount'],
                 [Sequelize.literal(`SUM(CASE WHEN "isRead" = false THEN 1 ELSE 0 END)`), 'unreadCount']
+                // [Sequelize.literal(`SUM(CASE WHEN "isRead" = 0 THEN 1 ELSE 0 END)`), 'unreadCount']
+                // [Sequelize.literal(`SUM(CASE WHEN isRead = 0 THEN 1 ELSE 0 END)`), 'unreadCount']
+                // [Sequelize.literal('SUM(CAST(isRead AS UNSIGNED) = 0)'), 'unreadCount']
             ],
             group: ['roomId'],
             order: [[Sequelize.fn('MAX', Sequelize.col('createdAt')), 'DESC']],
@@ -116,12 +119,14 @@ const markMessagesAsRead = async (req, res, next) => {
     try {
         const { userId } = req.params;
 
-        await Message.update(
+        const [affectedCount] = await Message.update(
             { isRead: true },
             { where: { roomId: userId, senderType: 'user', isRead: false } }
         );
+        console.log(`✅ Updated ${affectedCount} messages for user ${userId}`);
 
-        res.json({ status: 'success', message: 'Messages marked as read' });
+
+        res.json({ status: 'success', message: 'Messages marked as read', count: affectedCount });
     } catch (error) {
         console.error("Error marking messages as read:", error);
         next(error);

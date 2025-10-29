@@ -521,15 +521,15 @@ body {
 .mobile-menu-btn {
   display: none;
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 55px;
-  height: 55px;
+  top: 70px;
+  left: 15px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: #b8860b;
   color: #000;
   border: none;
-  font-size: 24px;
+  font-size: 22px;
   cursor: pointer;
   z-index: 998;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -550,11 +550,11 @@ body {
 
 @media (max-width: 480px) {
   .mobile-menu-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 22px;
-    bottom: 15px;
-    left: 15px;
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    top: 57px;
+    left: 315px;
   }
 }
 
