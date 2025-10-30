@@ -9,33 +9,32 @@ const getAdminPage = async (req, res) => {
         const userId = req.user.id;
         const token = req.cookies.accessToken;
 
-        console.log("👑 Admin page request - User ID:", userId);
-        console.log("🔑 Token exists:", !!token);
+        console.log("Admin page request - User ID:", userId);
+        console.log("Token exists:", !!token);
 
         const admin = await User.findByPk(userId);
         if (!admin) {
-            console.log("❌ Admin not found in database");
+            console.log("Admin not found in database");
             res.clearCookie("accessToken");
             res.clearCookie("refreshToken");
             return res.redirect('/auth/login');
         }
 
-        console.log("✅ Admin found:", admin.name);
+        console.log("Admin found:", admin.name);
 
         let htmlContent = fs.readFileSync(
             path.join(__dirname, '..', 'public', 'admin.html'), 
             'utf8'
         );
 
-        // Replace template variables with proper escaping
         htmlContent = htmlContent.replace(/<%=\s*userId\s*%>/g, userId);
         htmlContent = htmlContent.replace(/<%=\s*token\s*%>/g, token);
 
-        console.log("✅ Sending admin page to user:", userId);
+        console.log("Sending admin page to user:", userId);
 
         res.send(htmlContent);
     } catch (error) {
-        console.error("❌ Admin page error:", error);
+        console.error("Admin page error:", error);
         res.status(500).json({
             status: 'error',
             message: error.message
@@ -123,7 +122,7 @@ const markMessagesAsRead = async (req, res, next) => {
             { isRead: true },
             { where: { roomId: userId, senderType: 'user', isRead: false } }
         );
-        console.log(`✅ Updated ${affectedCount} messages for user ${userId}`);
+        console.log(`Updated ${affectedCount} messages for user ${userId}`);
 
 
         res.json({ status: 'success', message: 'Messages marked as read', count: affectedCount });

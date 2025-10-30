@@ -12,13 +12,11 @@ function showMessage(text, type = "error") {
   setTimeout(() => (messageBox.style.display = "none"), 4000);
 }
 
-// البدء بعرض صفحة Login
 if (loginForm && registerForm) {
   loginForm.classList.remove("hidden");
   registerForm.classList.add("hidden");
 }
 
-// التبديل بين Login و Register
 goLogin?.addEventListener("click", () => {
   registerForm.classList.add("hidden");
   loginForm.classList.remove("hidden");
@@ -31,7 +29,6 @@ goRegister?.addEventListener("click", () => {
   messageBox.style.display = "none";
 });
 
-// ===== REGISTER =====
 registerForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   
@@ -43,7 +40,7 @@ registerForm?.addEventListener("submit", async (e) => {
     return showMessage("All fields are required!", "error");
   }
 
-  console.log("📝 Attempting registration...");
+  console.log("Attempting registration...");
 
   try {
     const res = await fetch("/auth/register", {
@@ -70,12 +67,11 @@ registerForm?.addEventListener("submit", async (e) => {
     }
 
   } catch (err) {
-    console.error("❌ Registration error:", err);
+    console.error("Registration error:", err);
     showMessage("Network error. Please try again.", "error");
   }
 });
 
-// ===== LOGIN =====
 loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   
@@ -86,7 +82,7 @@ loginForm?.addEventListener("submit", async (e) => {
     return showMessage("Please enter your email and password.", "error");
   }
 
-  console.log("🔐 Attempting login for:", email);
+  console.log("Attempting login for:", email);
 
   try {
     const res = await fetch("/auth/login", {
@@ -113,7 +109,7 @@ loginForm?.addEventListener("submit", async (e) => {
     }
 
   } catch (err) {
-    console.error("❌ Login error:", err);
+    console.error("Login error:", err);
     showMessage("Network error. Please try again.", "error");
   }
 });

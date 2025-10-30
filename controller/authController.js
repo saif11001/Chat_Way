@@ -11,7 +11,7 @@ const getRegister = (req, res, next) => {
 const register = async (req, res, next) => {
     const { name, email, password } = req.body;
         
-    console.log('📝 Register attempt:', { name, email });
+    console.log('Register attempt:', { name, email });
     
     try {
         if (!name || !email || !password) {

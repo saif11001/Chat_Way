@@ -13,7 +13,7 @@
         </div>
 
         <div class="admin-content">
-            <!-- Overlay للموبايل -->
+
             <div class="sidebar-overlay" id="sidebarOverlay"></div>
             
             <div class="sidebar" id="sidebar">
@@ -45,7 +45,6 @@
             </div>
         </div>
 
-        <!-- زر فتح القائمة للموبايل -->
         <button class="mobile-menu-btn" id="mobileMenuBtn">📋</button>
     </div>
 
@@ -55,7 +54,6 @@
             token: '<%= token %>'
         };
         
-        // Debug للتأكد إن القيم موجودة
         console.log('ADMIN_DATA initialized:', {
             hasId: !!window.ADMIN_DATA.id && window.ADMIN_DATA.id !== '<%= userId %>',
             hasToken: !!window.ADMIN_DATA.token && window.ADMIN_DATA.token !== '<%= token %>',

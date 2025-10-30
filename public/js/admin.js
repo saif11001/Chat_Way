@@ -1,27 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("👑 Admin panel loading...");
+  console.log("Admin panel loading...");
 
   const adminData = window.ADMIN_DATA;
 
-  console.log("Admin Data:", adminData); // للتشخيص
+  console.log("Admin Data:", adminData);
 
-  // التحقق من وجود البيانات
   if (!adminData) {
-    console.error("❌ No ADMIN_DATA found in window object!");
+    console.error("No ADMIN_DATA found in window object!");
     alert("Unauthorized access: No admin data found!");
     window.location.href = "/auth/login";
     return;
   }
 
   if (!adminData.token) {
-    console.error("❌ No token found in ADMIN_DATA!");
+    console.error("No token found in ADMIN_DATA!");
     alert("Unauthorized access: No token found!");
     window.location.href = "/auth/login";
     return;
   }
 
   if (!adminData.id) {
-    console.error("❌ No admin ID found in ADMIN_DATA!");
+    console.error("No admin ID found in ADMIN_DATA!");
     alert("Unauthorized access: No admin ID found!");
     window.location.href = "/auth/login";
     return;
@@ -30,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const token = adminData.token;
   const adminId = adminData.id;
 
-  console.log("✅ Admin logged in:", adminId);
-  console.log("🔑 Token length:", token.length);
+  console.log("Admin logged in:", adminId);
+  console.log("Token length:", token.length);
 
   const socket = io({
     auth: { token }
@@ -48,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const logoutBtn = document.getElementById('logoutBtn');
   const refreshBtn = document.getElementById('refreshBtn');
 
-  // عناصر الموبايل
   const sidebar = document.getElementById('sidebar');
   const sidebarOverlay = document.getElementById('sidebarOverlay');
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -56,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentUserId = null;
   let currentUserName = null;
 
-  // وظيفة فتح/إغلاق الـ Sidebar على الموبايل
   function toggleSidebar() {
     sidebar.classList.toggle('show-mobile');
     sidebarOverlay.classList.toggle('show');
@@ -67,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebarOverlay.classList.remove('show');
   }
 
-  // Event listeners للموبايل
   if (mobileMenuBtn) {
     mobileMenuBtn.addEventListener('click', toggleSidebar);
   }
@@ -122,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     currentUserId = userId;
     currentUserName = userName;
 
-    console.log(`✅ Selected user ${userId} (${userName})`);
+    console.log(`Selected user ${userId} (${userName})`);
 
     document.querySelectorAll('.user-item').forEach(item => {
       item.classList.remove('active');
@@ -153,12 +149,11 @@ document.addEventListener('DOMContentLoaded', function() {
         method: 'POST',
         credentials: 'include'
       });
-      console.log(`✅ Messages for user ${userId} marked as read`);
+      console.log(`Messages for user ${userId} marked as read`);
     } catch (err) {
       console.error("Error marking messages as read:", err);
     }
 
-    // إغلاق الـ Sidebar على الموبايل بعد اختيار المستخدم
     if (window.innerWidth <= 768) {
       closeSidebar();
     }
@@ -230,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const text = messageInput.value.trim();
     if (!text) return;
 
-    console.log(`📤 Sending message to user ${currentUserId}:`, text);
+    console.log(`Sending message to user ${currentUserId}:`, text);
 
     socket.emit('admin_message', {
       clientId: currentUserId,
@@ -241,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   socket.on('admin_message_sent', (data) => {
-    console.log("✅ Admin message confirmed:", data);
+    console.log("Admin message confirmed:", data);
     
     if (currentUserId && String(data.roomId) === String(currentUserId)) {
       renderMessage({
@@ -253,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   socket.on('new_user_message', (data) => {
-    console.log("📨 New user message:", data);
+    console.log("New user message:", data);
     
     loadActiveChats();
 
@@ -264,7 +259,6 @@ document.addEventListener('DOMContentLoaded', function() {
         createdAt: data.createdAt
       });
 
-      // Mark as read فوراً لأن المحادثة مفتوحة
       fetch(`/admin/api/messages/mark-read/${data.roomId}`, {
         method: 'POST',
         credentials: 'include'
@@ -273,17 +267,17 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   socket.on('message_error', (error) => {
-    console.error("❌ Message error:", error);
+    console.error("Message error:", error);
     alert(`Failed to send message: ${error.error}`);
   });
 
   refreshBtn.addEventListener('click', () => {
-    console.log("🔄 Refreshing chats...");
+    console.log("Refreshing chats...");
     loadActiveChats();
   });
 
   logoutBtn.addEventListener('click', async () => {
-    console.log("🚪 Logging out...");
+    console.log("Logging out...");
     try {
       await fetch('/auth/logout', {
         method: 'POST',
@@ -296,16 +290,16 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   socket.on('connect', () => {
-    console.log("✅ Admin connected to server - Socket ID:", socket.id);
+    console.log("Admin connected to server - Socket ID:", socket.id);
     loadActiveChats();
   });
 
   socket.on('disconnect', () => {
-    console.log("⚠️ Disconnected from server");
+    console.log("Disconnected from server");
   });
 
   socket.on('connect_error', (err) => {
-    console.error("❌ Connection error:", err.message);
+    console.error("Connection error:", err.message);
     alert("Connection error! Please refresh the page.");
   });
 });
